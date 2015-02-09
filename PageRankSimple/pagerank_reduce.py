@@ -22,8 +22,9 @@ for line in sys.stdin:
         prevNodeID = nodeID
         continue
     if nodeID != prevNodeID:
-        print("%s\t%f" %(nodeID, sum(rankContr)))
+        print("%s\t%f" %(prevNodeID, sum(rankContr)))
         rankContr = []
+        rankContr.append(float(lineData[1]))
         prevNodeID = nodeID
     else:
         rankContr.append(float(lineData[1]))
