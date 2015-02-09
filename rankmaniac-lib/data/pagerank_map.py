@@ -14,4 +14,5 @@ for line in sys.stdin:
         # currPageRank turns into oldPageRank
         print ("%s\t%f\t%s" %(currNode, currPageRank, ','.join(lineData[2:])))
     else:
+    	print("%s\t%f" %(currNode, 1))
     	print ("%s\t%f\tno_outlinks" % (currNode, currPageRank))
