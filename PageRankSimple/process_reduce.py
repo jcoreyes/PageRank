@@ -4,7 +4,6 @@ Input will be of form:
 NodeId:idNumber:iter \t currRank,prevRank,outLink1,outLink2...
 """
 import sys
-import operator
 nodes = {}
 avgRankDiff = 0
 maxRankDiff = -sys.maxint
@@ -27,10 +26,10 @@ for line in sys.stdin:
     nodes[nodeID]['rankDiff'] = rankDiff
     nodes[nodeID]['currRank'] = currRank
 
-if iter == 51:
+if iter == 2:
     topRanks = sorted(nodes.items(), key=lambda x:x[1]['currRank'], reverse=True)
     for i in range(20):
-        print("FinalRank:%f %d" %(topRanks[i][1]['currRank'], topRanks[i][0]))
+        print("FinalRank:%f\t%d" %(topRanks[i][1]['currRank'], topRanks[i][0]))
 else:
     for node, data in nodes.items():
         sys.stdout.write(data['line'])
