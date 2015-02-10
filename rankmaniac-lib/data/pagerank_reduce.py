@@ -1,72 +1,39 @@
 #!/usr/bin/env python
 
 """
-Reducer for 1st step of PageRank
-Takes input from pagerank_map where each line in std input is of form
-0\t0.2
-where 0 is the id of the node and 0.2  is the contribution to that node
-from another node
-Output wil be of form
-0\t1.1
-where 0 is the id of the node, and 1.1 is its new rank computed
-from the sum of its contributions
+Reducer for 1st step of PageRank that takes input from pagerank_map
+Input will be of two forms:
+idNumber \t contribtion
+idNumber \t prevRank \t iter \t outLink1,outLink2...
+
+Output will be of form:
+NodeId:idNumber:iter \t currRank,prevRank,outLink1,outLink2...
 """
 
-
-# import sys
-# prevNodeID = -1
 DAMPING_FACTOR = 0.85
-
-# for line in sys.stdin:
-#     lineData = line.rstrip('\n').split('\t')
-#     nodeID = lineData[0]
-#     if len(lineData) > 2:
-#         prevRank = float(lineData[1])
-#         outLinks = lineData[2]
-#         continue
-#     if prevNodeID == -1:
-#         rankContr = [float(lineData[1])]
-#         prevNodeID = nodeID
-#         continue
-#     if nodeID != prevNodeID:
-#         if prevNodeID == 14:
-#             print out
-#         pageRank = 1 - DAMPING_FACTOR + (DAMPING_FACTOR * sum(rankContr))
-#         if outLinks != 'no_outlinks':
-#             print("NodeID:%s\t%f,%f,%s" %(prevNodeID, pageRank, prevRank, outLinks))
-#         else:
-#             print("NodeID:%s\t%f,%f" % (prevNodeID, pageRank, prevRank))
-#         rankContr = [float(lineData[1])]
-#         outLinks = []
-#         prevNodeID = nodeID
-#     else:
-#         rankContr.append(float(lineData[1]))
-
-# pageRank = 1 - DAMPING_FACTOR + (DAMPING_FACTOR * sum(rankContr))
-# if outLinks != 'no_outlinks':
-#     print("NodeID:%s\t%f,%f,%s" %(prevNodeID, pageRank, prevRank, outLinks))
-# else:
-#     print("NodeID:%s\t%f,%f" % (prevNodeID, pageRank, prevRank))
 
 import sys
 nodes = {}
+iter = 0
 for line in sys.stdin:
     lineData = line.rstrip('\n').split('\t')
     nodeID = lineData[0]
     if nodeID not in nodes:
         nodes[nodeID] = {}
         nodes[nodeID]['contributions'] = []
-    if len(lineData) > 2:
-        nodes[nodeID]['prevRank'] = float(lineData[1])
-        nodes[nodeID]['outLinks'] = lineData[2]
-    else:
+    # If line is of first type, just save contributions
+    if len(lineData) == 2:
         nodes[nodeID]['contributions'].append(float(lineData[1]))
-
+    else:
+        # Save prev rank, outlinks, and iter
+        nodes[nodeID]['prevRank'] = lineData[1]
+        iter = int(lineData[2])
+        nodes[nodeID]['outLinks'] = lineData[3]
 for nodeID in nodes:
     currRank = 1 - DAMPING_FACTOR + (DAMPING_FACTOR * sum(nodes[nodeID]['contributions']))
     prevRank = nodes[nodeID]['prevRank']
     outLinks = nodes[nodeID]['outLinks']
     if outLinks != 'no_outlinks':
-        print("NodeID:%s\t%f,%f,%s" %(nodeID, currRank, prevRank, outLinks))
+        print("NodeID:%s:%d\t%f,%s,%s" %(nodeID, iter, currRank, prevRank, outLinks))
     else:
-        print("NodeID:%s\t%f,%f" % (nodeID, currRank, prevRank))
+        print("NodeID:%s:%d\t%f,%s" % (nodeID, iter, currRank, prevRank))
