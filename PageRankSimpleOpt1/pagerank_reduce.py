@@ -30,6 +30,8 @@ for line in sys.stdin:
         iter = int(lineData[2])
         nodes[nodeID]['outLinks'] = lineData[3]
 for nodeID in nodes:
+    if 'prevRank' not in nodes[nodeID]:
+        continue
     currRank = 1 - DAMPING_FACTOR + (DAMPING_FACTOR * sum(nodes[nodeID]['contributions']))
     prevRank = nodes[nodeID]['prevRank']
     outLinks = nodes[nodeID]['outLinks']
