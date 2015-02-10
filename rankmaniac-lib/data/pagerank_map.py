@@ -25,7 +25,7 @@ for line in sys.stdin:
             print("%s\t%f" %(outLink, currPageRank/numOutLinks))
     # If no outlinks, then contribution is 1
     else:
-        print("%s\t%f" %(currNode, 1))
+        print("%s\t%f" %(currNode, currPageRank))
     # If no iteration number yet start at 1
     if len(nodeData) < 3:
         iter = 1

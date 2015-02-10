@@ -8,6 +8,7 @@ import operator
 nodes = {}
 avgRankDiff = 0
 maxRankDiff = -sys.maxint
+maxRank = -sys.maxint
 iter = 0
 for line in sys.stdin:
     lineData = line.split('\t')
@@ -22,6 +23,7 @@ for line in sys.stdin:
 
     rankDiff =  abs(currRank - prevRank)
     maxRankDiff = max(maxRankDiff, rankDiff)
+    maxRank = max(maxRank, currRank)
     nodes[nodeID] = {}
     nodes[nodeID]['line'] = line
     nodes[nodeID]['rankDiff'] = rankDiff
@@ -32,5 +34,9 @@ if iter == 51:
     for i in range(20):
         print("FinalRank:%f %d" %(topRanks[i][1]['currRank'], topRanks[i][0]))
 else:
+    thresh = 0.2 * maxRank
     for node, data in nodes.items():
+        # Remove node if rank less than 20% of max
+        if (data[currRank] < maxRank):
+            continue
         sys.stdout.write(data['line'])
