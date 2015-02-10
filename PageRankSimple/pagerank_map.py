@@ -1,18 +1,38 @@
+#!/usr/bin/env python
 """
-Mapper for 1st step of PageRank
-Takes input from stdin which will be tab delimited form for each line:
-NodeId:0\t1.0, 0,0, 83, 212, 301
-where 0 is the curret node identifier, 1.0 and 0.0 are the current and previous PageRanks of this node,
-and 81...301 are nodes which node 0 links to.
+Input Data Format For first iteration:
+NodeId:idNumber \t currRank,prevRank,outLink1,outLink2...
+For after first iteration:
+NodeId:idNumber:iter \t currRank,prevRank,outLink1,outLink2...
+
+Output will be of 2 forms:
+idNumber \t contribution
+idNumber \t prevRank \t iter \t outLink1,outLink2...
 """
-
-
 import sys
 
 for line in sys.stdin:
-    lineData = line.rstrip('\n').split('\t')[1].split(',')
-    currPageRank = float(lineData[0])
-    if len(lineData) > 2:
-        numOutLinks = len(lineData[2:])
-        for outLink in lineData[2:]:
+    lineData = line.rstrip('\n').split('\t')
+    nodeData = lineData[0].split(':')
+    currNode = nodeData[1]
+    rankData = lineData[1].split(',')
+    currPageRank = float(rankData[0])
+    # If there's atleast 1 outlink
+    if len(rankData) > 2:
+        outLinks = rankData[2:]
+        numOutLinks = len(outLinks)
+        for outLink in outLinks:
             print("%s\t%f" %(outLink, currPageRank/numOutLinks))
+    # If no outlinks, then contribution is 1
+    else:
+        print("%s\t%f" %(currNode, 1))
+    # If no iteration number yet start at 1
+    if len(nodeData) < 3:
+        iter = 1
+    else:
+        iter = int(nodeData[2]) + 1
+    # prevRank becomes currPageRank
+    # currPageRank will be recalculated in the next reduce
+    if len(rankData) < 3:
+        outLinks = ['no_outlinks']
+    print ("%s\t%f\t%d\t%s" %(currNode, currPageRank, iter, ','.join(outLinks)))
