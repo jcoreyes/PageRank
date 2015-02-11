@@ -5,8 +5,10 @@ NodeId:idNumber:iter \t currRank,prevRank,outLink1,outLink2...
 """
 import sys
 nodes = {}
-avgRankDiff = 0
+totRankDiff = 0
 maxRankDiff = -sys.maxint
+maxRank = -sys.maxint
+totalRank = 0
 iter = 0
 for line in sys.stdin:
     lineData = line.split('\t')
@@ -19,17 +21,25 @@ for line in sys.stdin:
     currRank = float(rankData[0])
     prevRank = float(rankData[1])
 
+    totalRank += currRank
     rankDiff =  abs(currRank - prevRank)
+    totRankDiff += rankDiff
     maxRankDiff = max(maxRankDiff, rankDiff)
+    maxRank = max(maxRank, currRank)
     nodes[nodeID] = {}
     nodes[nodeID]['line'] = line
     nodes[nodeID]['rankDiff'] = rankDiff
     nodes[nodeID]['currRank'] = currRank
 
-if iter >= 50:
+numNodes = len(nodes)
+
+STOP = False
+if totRankDiff/float(numNodes) < .0001 or iter >= 50:
+    STOP = True
+
+if STOP:
     topRanks = sorted(nodes.items(), key=lambda x:x[1]['currRank'], reverse=True)
     for i in range(20):
-        #sys.stdout.write("FinalRank:%f\t%d\n" %(0, i))
         print("FinalRank:%f\t%d" %(topRanks[i][1]['currRank'], topRanks[i][0]))
 else:
     for node, data in nodes.items():

@@ -26,7 +26,7 @@ for line in sys.stdin:
     nodes[nodeID]['rankDiff'] = rankDiff
     nodes[nodeID]['currRank'] = currRank
 
-if iter == 2:
+if iter >= 50:
     topRanks = sorted(nodes.items(), key=lambda x:x[1]['currRank'], reverse=True)
     for i in range(20):
         print("FinalRank:%f\t%d" %(topRanks[i][1]['currRank'], topRanks[i][0]))
