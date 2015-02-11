@@ -57,6 +57,7 @@ if STOP:
     topRanks = sorted(nodes.items(), key=lambda x:x[1]['currRank'], reverse=True)
     for i in range(20):
         print("FinalRank:%f\t%d" %(topRanks[i][1]['currRank'], topRanks[i][0]))
+    print numNodes
 else:
     if (not DELETE):
         for node, data in nodes.items():

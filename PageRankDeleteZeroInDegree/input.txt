@@ -1,0 +1,21 @@
+FinalRank:6.807993	16
+FinalRank:6.648066	83
+FinalRank:6.159610	47
+FinalRank:6.123019	17
+FinalRank:6.119485	27
+FinalRank:5.836107	225
+FinalRank:5.664775	84
+FinalRank:5.538728	272
+FinalRank:5.525912	135
+FinalRank:5.336323	22
+FinalRank:5.150498	76
+FinalRank:5.051509	12
+FinalRank:4.977984	178
+FinalRank:4.656861	342
+FinalRank:4.541466	219
+FinalRank:4.334350	91
+FinalRank:4.294583	222
+FinalRank:4.225402	78
+FinalRank:4.199018	229
+FinalRank:4.157076	305
+962

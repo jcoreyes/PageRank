@@ -34,7 +34,7 @@ for line in sys.stdin:
 numNodes = len(nodes)
 
 STOP = False
-if totRankDiff/float(numNodes) < .0001:
+if totRankDiff/float(numNodes) < .0004:
     STOP = True
 if iter >= 50:
     STOP = True
